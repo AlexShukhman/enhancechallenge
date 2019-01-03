@@ -107,5 +107,5 @@ venv.bak/
 .vscode/
 
 # custom
-sites/*
-csvs/*
+sites/*.html
+csvs/*.csv
