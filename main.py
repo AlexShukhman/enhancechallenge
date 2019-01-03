@@ -62,7 +62,7 @@ class Site:
             self._save()
 
     def _grab(self):
-        site = self.site.replace('/', '.')
+        site = self._getSiteName()
         with open('sites/' + site + '.html', 'r') as f:
             self.html = f.read()
 
@@ -74,7 +74,7 @@ class Site:
         self._save()
 
     def _save(self):
-        site = self.site.replace('/', '.')
+        site = self._getSiteName()
         with open('sites/' + site + '.html', 'w') as f:
             f.write(self.html)
 
@@ -99,10 +99,19 @@ class Site:
             sites = rows[0]
         return sites
 
-    def remove(self):
+    def _getSiteName(self):
+        site = self.site.split('/')
+        if site[0] == 'http:' or 'https:':
+            name = site[2]
+        else:
+            name = site[0]
+        breakdown = name.split('.')
+        return breakdown[-2] + '-homepage'
+
+    def remove(self):  # to remove site from system
         sites = self._getSites()
         sites.remove(self.site)
-        site = site = self.site.replace('/', '.')
+        site = self._getSiteName()
         with open('sites.csv', 'w') as f:
             writer = csv.writer(f)
             writer.writerow(sites)
