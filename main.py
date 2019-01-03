@@ -1,4 +1,4 @@
-'''
+''' Python Version 3.6.1
 
 Enhance Coding Challenge
 Alex Shukhman
@@ -13,10 +13,21 @@ except ImportError:
     # Fall back to Python 2's urllib2
     from urllib2 import urlopen
 
-page = urlopen('http://google.com')
+page = urlopen('http://www.economist.com')
 
 soup = bs(page, 'html.parser')
 
-body = soup.find('body').prettify()
+teasers = soup.find_all(lambda tag: tag.name == "a" and tag.get("class") == ["teaser__link"])
 
-print(body)
+teaserInfos = []
+
+for teaser in teasers:
+    img = teaser.find_all('img')
+    if len(img) > 0:
+        imgSrc = img[0].get('src')
+    else: 
+        imgSrc = None
+    teaserInfos.append((teaser.get('href'), teaser.get('aria-label'), imgSrc))
+
+for info in teaserInfos:
+    print(info)
