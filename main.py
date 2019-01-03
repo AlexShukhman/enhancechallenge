@@ -79,21 +79,24 @@ class Site:
             f.write(self.html)
 
         with open('csvs/' + site + '.csv', 'w') as f:
-            writer = csv.writer(f, delimiter=',', quoting=csv.QUOTE_ALL)
+            writer = csv.writer(f)
             writer.writerow(['href', 'desc', 'img href'])
             writer.writerows(self.breakdown)
 
         sites = self._getSites()
-        if site not in sites:
-            sites.append(site)
+        if self.site not in sites:
+            sites.append(self.site)
             with open('sites.csv', 'w') as f:
-                writer = csv.writer(f, delimiter=',', quoting=csv.QUOTE_ALL)
+                writer = csv.writer(f)
                 writer.writerow(sites)
 
     def _getSites(self):
         with open('sites.csv', 'r') as f:
             reader = csv.reader(f)
-            sites = list(reader)
+            rows = list(reader)
+            if len(rows) < 1:
+                return []
+            sites = rows[0]
         return sites
 
     def remove(self):
@@ -101,7 +104,7 @@ class Site:
         sites.remove(self.site)
         site = site = self.site.replace('/', '.')
         with open('sites.csv', 'w') as f:
-            writer = csv.writer(f, delimiter=',', quoting=csv.QUOTE_ALL)
+            writer = csv.writer(f)
             writer.writerow(sites)
         os.remove('sites/' + site + '.html')
         os.remove('csvs/' + site + '.csv')
@@ -110,7 +113,7 @@ class Site:
 # ***** Main Function *****
 def main(site):
     economist = Site(site)
-    print(economist.__repr__())
+    return economist.__repr__()
 
 
 if __name__ == "__main__":
