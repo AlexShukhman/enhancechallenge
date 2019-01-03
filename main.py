@@ -57,7 +57,7 @@ class Site:
                         imgSrc = img[0].get('src')
                     else:
                         imgSrc = None
-                    self.breakdown.append((teaser.get('href'),
+                    self.breakdown.append((self.site + teaser.get('href'),
                                            teaser.get('aria-label'), imgSrc))
             self._save()
 
