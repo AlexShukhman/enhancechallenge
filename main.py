@@ -13,11 +13,12 @@ except ImportError:
     # Fall back to Python 2's urllib2
     from urllib2 import urlopen
 
-page = urlopen('http://www.economist.com')
+page = urlopen('https://www.economist.com')
 
 soup = bs(page, 'html.parser')
 
-teasers = soup.find_all(lambda tag: tag.name == "a" and tag.get("class") == ["teaser__link"])
+teasers = soup.find_all(lambda tag: tag.name == "a"
+                        and tag.get("class") == ["teaser__link"])
 
 teaserInfos = []
 
@@ -25,9 +26,10 @@ for teaser in teasers:
     img = teaser.find_all('img')
     if len(img) > 0:
         imgSrc = img[0].get('src')
-    else: 
+    else:
         imgSrc = None
-    teaserInfos.append((teaser.get('href'), teaser.get('aria-label'), imgSrc))
+    teaserInfos.append((teaser.get('href'),
+                        teaser.get('aria-label'), imgSrc))
 
 for info in teaserInfos:
     print(info)
